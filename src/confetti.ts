@@ -79,13 +79,18 @@ const initialise = () => {
   canvas.style.position = "absolute";
   canvas.style.top = "0";
   canvas.style.left = "0";
-  canvas.style.zIndex = "-1";
+  canvas.style.zIndex = "999";
+  canvas.style.pointerEvents = "none";
 
   document.body.appendChild(canvas);
 
   window.addEventListener("resize", () => {
     resizeCanvas();
   });
+
+  const setZIndex = (zIndex: number) => {
+    canvas.style.zIndex = `${zIndex}`;
+  };
 
   let gl: WebGL2RenderingContext | WebGLRenderingContext | null =
     canvas.getContext("webgl2");
@@ -237,14 +242,25 @@ const initialise = () => {
   };
 
   // Function to start confetti
-  const blastConfetti = (intensity = 20) => {
+  const blastConfetti = (intensity = 20, options?: Options) => {
+    if (options) {
+      if (options.zIndex) {
+        setZIndex(options.zIndex);
+      }
+    }
+
     if (!animationStarted) {
       startAnimation();
     }
-    generateConfettiParticles(-1, 50 * intensity);
-    generateConfettiParticles(0, 25 * intensity);
-    generateConfettiParticles(1, 50 * intensity);
+
+    const cannonSpawns = options?.cannonSpawns || [-1, 1];
+
+    cannonSpawns.forEach((x) => {
+      generateConfettiParticles(x, 25 * intensity);
+    });
   };
+
+  startAnimation();
 
   return {
     animationStarted,
@@ -253,13 +269,16 @@ const initialise = () => {
   };
 };
 
-let blastConfetti = (_intensity: number) => {};
-let startAnimation = () => {};
+type Options = {
+  zIndex?: number;
+  cannonSpawns?: number[];
+};
+
+let blastConfetti = (intensity?: number, options?: Options): void => {};
 
 try {
-  const { _blastConfetti, _startAnimation } = initialise();
+  const { _blastConfetti } = initialise();
   blastConfetti = _blastConfetti;
-  startAnimation = _startAnimation;
 } catch (err) {
   console.error("Error initialising confetti: " + err);
 }
