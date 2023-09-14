@@ -1,5 +1,8 @@
 # 🎉 confetti-cannons 🎉
 
+## Github
+https://github.com/sjlevens/confetti-cannon
+
 ## Elevate your web celebrations!
 
 Looking to bring some extra sparkle and joy to your web application? Want to surprise your users with a virtual celebration they'll never forget? `confetti-cannons` is here to make your web festivities unforgettable! With just one line of code, shower your web application with confetti 🎊
