@@ -1,6 +1,7 @@
 # 🎉 confetti-cannons 🎉
 
 ## Github
+
 https://github.com/sjlevens/confetti-cannon
 
 ## Elevate your web celebrations!
@@ -25,6 +26,10 @@ confetti();
 ```
 
 This will blast confetti particles from the bottom of your screen. Who knew joy could be so few kb? 😄
+
+### JSFiddle
+
+https://jsfiddle.net/sy3m9khd/11/
 
 ### Event Listener
 
