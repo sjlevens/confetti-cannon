@@ -264,4 +264,4 @@ try {
   console.error("Error initialising confetti: " + err);
 }
 
-export { blastConfetti, startAnimation };
+export default blastConfetti;

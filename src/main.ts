@@ -1,3 +1,3 @@
-import { blastConfetti } from "./confetti";
+import confetti from "./confetti";
 
-export default blastConfetti;
+export default confetti;
