@@ -44,6 +44,28 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 
+### Spawn from a cursor click!
+
+```javascript
+document.addEventListener("click", (event) => {
+  const canvas = document.querySelector("canvas"); // Get the canvas
+  const rect = canvas.getBoundingClientRect(); // Get canvas dimensions
+
+  // Translate to origin in center
+  const x = event.clientX - rect.left - canvas.width / 2;
+  const y = -(event.clientY - rect.top - canvas.height / 2);
+
+  // Normalize to [-1, 1]
+  const xNormalized = 2 * (x / canvas.width);
+  const yNormalized = 2 * (y / canvas.height);
+
+  confetti(20, {
+    cannonSpawns: [[xNormalized, yNormalized]],
+    spread: "fountain",
+  });
+});
+```
+
 ### React button handler
 
 ```javascript
@@ -87,14 +109,20 @@ export default CelebrateOnLoad;
 You can customise the intensity and other configurations:
 
 ```javascript
+type Options = {
+  zIndex?: number,
+  cannonSpawns?: number[][],
+  spread?: "cone" | "fountain",
+};
+
 // Blast with custom intensity and z-index
 confetti(50, { zIndex: 1000 });
 
 // This will place your confetti behind everything (careful if you use it in a drawer!)
 confetti(50, { zIndex: -1 });
 
-// Blast from specific cannon spawns (default is [-1, 1])
-confetti(20, { cannonSpawns: [-0.5, 0.5] });
+// Blast from specific cannon spawns (an array of 2d points)
+confetti(20, { cannonSpawns: [[-0.5, 0.5]] });
 ```
 
 ## How it Works

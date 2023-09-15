@@ -140,14 +140,28 @@ const initialise = () => {
 
   let particles: Particle[] = [];
 
-  const generateConfettiParticles = (xStart: number, numParticles: number) => {
+  const generateConfettiParticles = (
+    xStart: number = 0,
+    yStart: number = 0,
+    numParticles: number = 100,
+    spread: Options["spread"] = "cone"
+  ) => {
+    console.log(xStart, yStart);
     for (let i = 0; i < numParticles; i++) {
       const x = xStart;
-      const y = Math.random() * 0.2 - 1.0;
-      const vx =
-        Math.random() *
-        0.02 *
-        (xStart ? -xStart : Math.random() < 0.5 ? 1 : -1);
+      const y = yStart;
+
+      let vx = 0;
+
+      if (spread === "cone") {
+        vx =
+          Math.random() *
+          0.03 *
+          (xStart ? -xStart : Math.random() < 0.5 ? 1 : -1);
+      } else if (spread === "fountain") {
+        vx = Math.random() * 0.02 * (Math.random() < 0.5 ? 1 : -1);
+      }
+
       const vy = Math.random() * 0.08 - 0.01; // Random upward velocity in y
 
       const color = [Math.random(), Math.random(), Math.random(), 0.5]; // RGBA
@@ -202,12 +216,7 @@ const initialise = () => {
     gl.drawArrays(gl.POINTS, 0, particles.length);
 
     for (const particle of particles) {
-      if (
-        particle.x < -1 ||
-        particle.x > 1 ||
-        particle.y < -1 ||
-        particle.y > 1
-      ) {
+      if (particle.x < -1 || particle.x > 1 || particle.y < -1) {
         particle.active = false;
         continue;
       }
@@ -253,10 +262,13 @@ const initialise = () => {
       startAnimation();
     }
 
-    const cannonSpawns = options?.cannonSpawns || [-1, 1];
+    const cannonSpawns = options?.cannonSpawns || [
+      [-1, -1],
+      [1, -1],
+    ];
 
-    cannonSpawns.forEach((x) => {
-      generateConfettiParticles(x, 25 * intensity);
+    cannonSpawns.forEach(([x, y]) => {
+      generateConfettiParticles(x, y, 25 * intensity, options?.spread);
     });
   };
 
@@ -271,7 +283,8 @@ const initialise = () => {
 
 type Options = {
   zIndex?: number;
-  cannonSpawns?: number[];
+  cannonSpawns?: number[][];
+  spread?: "cone" | "fountain";
 };
 
 let blastConfetti = (intensity?: number, options?: Options): void => {};
