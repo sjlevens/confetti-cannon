@@ -76,7 +76,7 @@ function compileShader(
 const initialise = () => {
   const canvas = document.createElement("canvas");
 
-  canvas.style.position = "absolute";
+  canvas.style.position = "fixed";
   canvas.style.top = "0";
   canvas.style.left = "0";
   canvas.style.zIndex = "999";
@@ -295,5 +295,42 @@ try {
 } catch (err) {
   console.error("Error initialising confetti: " + err);
 }
+
+const makeBlastConfettiAtMouseLocation =
+  (intensity: number, options: Options) => (event: MouseEvent) => {
+    const canvas = document.querySelector("canvas"); // Get your canvas
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect(); // Get canvas dimensions
+
+    // Translate to origin in center
+    const x = event.clientX - rect.left - canvas.width / 2;
+    const y = -(event.clientY - rect.top - canvas.height / 2);
+
+    // Normalize to [-1, 1]
+    const xNormalized = 2 * (x / canvas.width);
+    const yNormalized = 2 * (y / canvas.height);
+
+    blastConfetti(intensity, {
+      cannonSpawns: [[xNormalized, yNormalized]],
+      spread: "fountain",
+      ...options,
+    });
+  };
+
+export const attachConfettiToCursorClick = (
+  intensity: number = 20,
+  options?: Options
+) => {
+  const blastConfettiAtMouseLocation = makeBlastConfettiAtMouseLocation(
+    intensity,
+    { ...options }
+  );
+  document.addEventListener("click", blastConfettiAtMouseLocation);
+
+  return () => {
+    document.removeEventListener("click", blastConfettiAtMouseLocation);
+  };
+};
 
 export default blastConfetti;

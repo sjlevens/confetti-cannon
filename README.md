@@ -27,10 +27,6 @@ confetti();
 
 This will blast confetti particles from the bottom of your screen. Who knew joy could be so few kb? 😄
 
-### JSFiddle
-
-https://jsfiddle.net/sy3m9khd/11/
-
 ### Event Listener
 
 ```javascript
@@ -47,23 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
 ### Spawn from a cursor click!
 
 ```javascript
-document.addEventListener("click", (event) => {
-  const canvas = document.querySelector("canvas"); // Get the canvas
-  const rect = canvas.getBoundingClientRect(); // Get canvas dimensions
+import { attachConfettiToCursorClick } from "confetti-cannons";
 
-  // Translate to origin in center
-  const x = event.clientX - rect.left - canvas.width / 2;
-  const y = -(event.clientY - rect.top - canvas.height / 2);
-
-  // Normalize to [-1, 1]
-  const xNormalized = 2 * (x / canvas.width);
-  const yNormalized = 2 * (y / canvas.height);
-
-  confetti(20, {
-    cannonSpawns: [[xNormalized, yNormalized]],
-    spread: "fountain",
-  });
-});
+attachConfettiToCursorClick();
 ```
 
 ### React button handler
