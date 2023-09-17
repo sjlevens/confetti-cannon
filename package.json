@@ -1,7 +1,7 @@
 {
   "name": "confetti-cannons",
   "description": "Adds a confetti cannon effect to any page!",
-  "version": "0.1.8",
+  "version": "0.2.1",
   "type": "module",
   "repository": {
     "type": "git",
