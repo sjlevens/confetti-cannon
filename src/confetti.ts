@@ -146,7 +146,6 @@ const initialise = () => {
     numParticles: number = 100,
     spread: Options["spread"] = "cone"
   ) => {
-    console.log(xStart, yStart);
     for (let i = 0; i < numParticles; i++) {
       const x = xStart;
       const y = yStart;
